@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    ports:
+      - "${PORT_CUSTOMER}:8000"
+      - "${PORT_ORDER}:8001"
+      - "${PORT_PRODUCT}:8002"
+    depends_on:
+      - mongo
+    environment:
+      - DATABASE_URL=${MONGO_URI}
+      - NODE_ENV=${NODE_ENV}
+      - REQUIRES_AUTH=${REQUIRES_AUTH}
+      - PORT_CUSTOMER=${PORT_CUSTOMER}
+      - PORT_ORDER=${PORT_ORDER}
+      - PORT_PRODUCT=${PORT_PRODUCT}
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb:/data/db
+volumes:
+  mongodb:
+
+environment:
+  MONGO_URI: "mongodb+srv://saad:saad@cluster0.enwbik0.mongodb.net/project-test?retryWrites=true&w=majority"
+  NODE_ENV: "DEVELOPMENT"
+  REQUIRES_AUTH: "true"
+  PORT_CUSTOMER: "8000"
+  PORT_ORDER: "8001"
+  PORT_PRODUCT: "8002"
